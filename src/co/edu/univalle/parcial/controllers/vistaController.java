@@ -5,9 +5,9 @@
 package co.edu.univalle.parcial.controllers;
 
 /**
- *
- * @author julia
+ * 
+ * @author Julian Puyo
  */
-public class Controller {
+public class vistaController {
     
 }
