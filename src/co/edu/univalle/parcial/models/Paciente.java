@@ -4,6 +4,9 @@
  */
 package co.edu.univalle.parcial.models;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * 
  * @author Julian Puyo
@@ -14,6 +17,7 @@ public class Paciente {
     private String apellidos;
     private String telefono;
     private String direccion;
+    private List alergias;
 
     public Paciente(String identificacion, String nombres, String apellidos, String telefono, String direccion) {
         this.identificacion = identificacion;
@@ -21,8 +25,21 @@ public class Paciente {
         this.apellidos = apellidos;
         this.telefono = telefono;
         this.direccion = direccion;
+        this.alergias = new ArrayList();
+    }
+    
+    public void addAlergia(Alergia alergia) {
+        alergias.add(alergia);
     }
 
+    public List getAlergias() {
+        return alergias;
+    }
+
+    public void setAlergias(List alergias) {
+        this.alergias = alergias;
+    }
+    
     public String getIdentificacion() {
         return identificacion;
     }
