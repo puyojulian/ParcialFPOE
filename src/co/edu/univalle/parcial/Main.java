@@ -18,6 +18,7 @@ public class Main {
      */
     public static void main(String[] args) {
         Vista vista = new Vista();
+        vista.setLocationRelativeTo(null);
         vista.setVisible(true);
         VistaController vistaController = new VistaController(vista);
     }

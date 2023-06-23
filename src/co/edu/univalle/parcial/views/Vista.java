@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
 
 /**
@@ -52,7 +53,7 @@ public class Vista extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Gestión Pacientes");
         setAutoRequestFocus(false);
         setBounds(new java.awt.Rectangle(0, 0, 800, 520));
@@ -265,6 +266,10 @@ public class Vista extends javax.swing.JFrame {
     
     //Getters//
 
+    public JRootPane getRootPane() {
+        return rootPane;
+    }
+    
     public JPanel getJpDatosPersonales() {
         return jpDatosPersonales;
     }

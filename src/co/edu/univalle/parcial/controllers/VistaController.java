@@ -8,6 +8,7 @@ import co.edu.univalle.parcial.models.Alergia;
 import co.edu.univalle.parcial.models.Paciente;
 import co.edu.univalle.parcial.repository.AlergiaDAO;
 import co.edu.univalle.parcial.repository.PacienteDAO;
+import co.edu.univalle.parcial.util.SerializationUtil;
 import co.edu.univalle.parcial.views.Vista;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,16 +40,26 @@ public class VistaController {
     private DefaultListModel listModel;
     private Map mapaPacientes;
     private Map mapaAlergias;
+    private final String filePathPacientes = "pacientes.bin";
+    private final String filePathAlergias = "alergias.bin";
     
     public VistaController(Vista vista) {
         this.vista = vista;
         this.daoAlergia = new AlergiaDAO();
         this.daoPaciente = new PacienteDAO();
-        mapaPacientes = daoPaciente.getPacientes();
-        mapaAlergias = daoAlergia.getAlergias();
         listModel = new DefaultListModel();
         instanciarAlergias();
-        popularJComboBox();
+        popularJComboBox();        
+        
+        if(SerializationUtil.isSerializedObjectExists(filePathPacientes)) {
+            cargarPacientes();
+        }
+        if(SerializationUtil.isSerializedObjectExists(filePathAlergias)) {
+            cargarAlergias();
+        }
+        
+        mapaPacientes = daoPaciente.getPacientes();
+        mapaAlergias = daoAlergia.getAlergias();
                 
         ActionsHandler manejadorDeActionEvents = new ActionsHandler();
         FocusHandler manejadorDeFocusEvents = new FocusHandler();
@@ -56,8 +70,45 @@ public class VistaController {
         vista.getBtnAgregar().addActionListener(manejadorDeActionEvents);
         vista.getBtnGuardar().addActionListener(manejadorDeActionEvents);
         vista.getBtnCancelar().addActionListener(manejadorDeActionEvents);
+
+        vista.addWindowListener(new WindowAdapter() {
+             @Override
+            public void windowClosing(WindowEvent evt) {
+                cerrarJuego();
+            }
+        });
         
-        
+    }
+    
+    private void cerrarJuego(){
+        int respuesta;
+
+        respuesta = JOptionPane.showConfirmDialog(
+                null,"¿Esta seguro que no desea terminar?", "Advertencia",
+                JOptionPane.YES_NO_OPTION, 
+                JOptionPane.WARNING_MESSAGE);
+
+        if(respuesta == JOptionPane.YES_OPTION){
+            guardarPacientes();
+            guardarAlergias();
+            System.exit(0);
+        }
+    }
+
+    public void guardarPacientes() {
+        SerializationUtil.serializeObject(daoPaciente.getPacientes(), filePathPacientes);
+    }
+
+    public void guardarAlergias() {
+        SerializationUtil.serializeObject(daoAlergia.getAlergias(), filePathAlergias);
+    }
+
+    public void cargarPacientes() {
+        daoPaciente.setPacientes((Map) SerializationUtil.deserializeObject(filePathPacientes));
+    }
+    
+    public void cargarAlergias() {
+        daoAlergia.setAlergias((Map) SerializationUtil.deserializeObject(filePathAlergias));
     }
     
     private void instanciarAlergias() {
@@ -275,9 +326,11 @@ public class VistaController {
                     }
                 }
                 else {
-                    mensajeTemporal("El número de identificación debe ser numérico.", "Error", 1100);
-                    vista.getTxtIdentificacion().setText("");
-                    estadoInicialTxt();
+                    if(!vista.getTxtIdentificacion().getText().isEmpty()) {
+                        mensajeTemporal("El número de identificación debe ser numérico.", "Error", 1100);
+                        vista.getTxtIdentificacion().setText("");
+                        estadoInicialTxt();
+                    }
                 }
             }
         }

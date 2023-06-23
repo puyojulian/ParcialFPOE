@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Julian Puyo
  */
 public class PacienteDAO implements PacienteDAOInterface{
-   private  Map<String, Paciente> mapaPacientes= new HashMap<>();
+   private  Map<String, Paciente> mapaPacientes = new HashMap<>();
     
     @Override
     public Map<String, Paciente> getPacientes() {
@@ -42,6 +42,11 @@ public class PacienteDAO implements PacienteDAOInterface{
     public boolean deletePaciente(String identificacion) {
         mapaPacientes.remove(identificacion);
         return true;
+    }
+
+    @Override
+    public void setPacientes(Map<String, Paciente> mapaPacientes) {
+        this.mapaPacientes = mapaPacientes;
     }
     
 }

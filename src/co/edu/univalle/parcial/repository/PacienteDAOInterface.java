@@ -15,8 +15,10 @@ import java.util.Map;
 public interface PacienteDAOInterface {
     public Map<String, Paciente> getPacientes();
     
-    public Paciente getPaciente(String identificacion);
+    public void setPacientes(Map<String, Paciente> mapaPacientes);
     
+    public Paciente getPaciente(String identificacion);
+       
     public boolean addPaciente(Paciente paciente);
     
     public boolean updatePaciente(String identificacion, Paciente paciente);

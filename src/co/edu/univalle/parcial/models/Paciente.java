@@ -4,6 +4,7 @@
  */
 package co.edu.univalle.parcial.models;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * 
  * @author Julian Puyo
  */
-public class Paciente {
+public class Paciente implements Serializable{
     private String identificacion;
     private String nombres;
     private String apellidos;

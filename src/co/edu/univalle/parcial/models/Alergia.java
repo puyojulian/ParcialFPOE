@@ -4,11 +4,13 @@
  */
 package co.edu.univalle.parcial.models;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author Julian Puyo
  */
-public class Alergia {
+public class Alergia implements Serializable{
     private int id;
     private String nombre;
     private static int consecutivo = 0;

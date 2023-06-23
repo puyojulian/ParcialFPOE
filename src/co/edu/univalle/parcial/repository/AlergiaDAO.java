@@ -42,5 +42,10 @@ public class AlergiaDAO implements AlergiaDAOInterface {
         mapaAlergias.remove(id);
         return true;
     }
+
+    @Override
+    public void setAlergias(Map<Integer, Alergia> mapaAlergias) {
+        this.mapaAlergias = mapaAlergias;
+    }
     
 }

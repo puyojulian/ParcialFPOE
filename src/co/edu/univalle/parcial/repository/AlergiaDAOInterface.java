@@ -14,6 +14,8 @@ import java.util.Map;
 public interface AlergiaDAOInterface {
     public Map<Integer, Alergia> getAlergias();
     
+    public void setAlergias(Map<Integer, Alergia> mapaAlergias);
+    
     public Alergia getAlergia(int id);
     
     public boolean addAlergia(Alergia alergia);
