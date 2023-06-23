@@ -12,13 +12,13 @@ import java.util.Map;
  * @author Julian Puyo
  */
 public interface PacienteDAOInterface {
-    public Map<String, Paciente> getPacientes();
+    public Map<Integer, Paciente> getPacientes();
     
-    public Paciente getPaciente(String identificacion);
+    public Paciente getPaciente(Integer identificacion);
     
     public boolean addPaciente(Paciente paciente);
     
-    public boolean updatePaciente(String identificacion, Paciente paciente);
+    public boolean updatePaciente(Integer identificacion, Paciente paciente);
     
-    public boolean deletePaciente(String identificacion);
+    public boolean deletePaciente(Integer identificacion);
 }

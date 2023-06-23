@@ -4,6 +4,7 @@
  */
 package co.edu.univalle.parcial;
 
+import co.edu.univalle.parcial.controllers.VistaController;
 import co.edu.univalle.parcial.views.Vista;
 
 /**
@@ -18,6 +19,7 @@ public class Main {
     public static void main(String[] args) {
         Vista vista = new Vista();
         vista.setVisible(true);
+        VistaController vistaController = new VistaController(vista);
     }
     
 }

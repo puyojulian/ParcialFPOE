@@ -7,6 +7,7 @@ package co.edu.univalle.parcial.views;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 /**
@@ -195,6 +196,9 @@ public class Vista extends javax.swing.JFrame {
                 .addGap(50, 50, 50))
         );
 
+        btnGuardar.setEnabled(false);
+        btnCancelar.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -260,6 +264,10 @@ public class Vista extends javax.swing.JFrame {
     }
     
     //Getters//
+
+    public JPanel getJpDatosPersonales() {
+        return jpDatosPersonales;
+    }
     
     public JButton getBtnAgregar() {
         return btnAgregar;

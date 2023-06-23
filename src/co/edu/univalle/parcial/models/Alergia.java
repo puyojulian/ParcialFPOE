@@ -11,11 +11,11 @@ package co.edu.univalle.parcial.models;
 public class Alergia {
     private int id;
     private String nombre;
-    private int consecutivo = 0;
+    private static int consecutivo = 0;
 
     public Alergia(String nombre) {
+        this.id = consecutivo++;
         this.nombre = nombre;
-        id = consecutivo++;
     }
 
     public String getNombre() {
@@ -28,5 +28,10 @@ public class Alergia {
 
     public int getId() {
         return id;
-    }   
+    }
+    
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

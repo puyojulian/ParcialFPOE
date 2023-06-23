@@ -12,27 +12,37 @@ import java.util.ArrayList;
  * @author Julian Puyo
  */
 public class Paciente {
-    private String identificacion;
+    private Integer identificacion;
     private String nombres;
     private String apellidos;
     private String telefono;
     private String direccion;
-    private List alergias;
+    private List<Alergia> alergias;
 
-    public Paciente(String identificacion, String nombres, String apellidos, String telefono, String direccion) {
+    public Paciente(Integer identificacion, String nombres, String apellidos, String telefono, String direccion) {
         this.identificacion = identificacion;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.telefono = telefono;
         this.direccion = direccion;
         this.alergias = new ArrayList();
+        System.out.println("Paciente Instanciado");
     }
+
+//    public Paciente(Integer identificacion) {
+//        this.identificacion = identificacion;
+//        this.nombres = "";
+//        this.apellidos = "";
+//        this.telefono = "";
+//        this.direccion = "";
+//        this.alergias = new ArrayList();
+//    }
     
     public void addAlergia(Alergia alergia) {
         alergias.add(alergia);
     }
 
-    public List getAlergias() {
+    public List<Alergia> getAlergias() {
         return alergias;
     }
 
@@ -40,11 +50,11 @@ public class Paciente {
         this.alergias = alergias;
     }
     
-    public String getIdentificacion() {
+    public Integer getIdentificacion() {
         return identificacion;
     }
 
-    public void setIdentificacion(String identificacion) {
+    public void setIdentificacion(Integer identificacion) {
         this.identificacion = identificacion;
     }
 

@@ -13,15 +13,15 @@ import java.util.Map;
  * @author Julian Puyo
  */
 public class PacienteDAO implements PacienteDAOInterface{
-   private  Map<String, Paciente> mapaPacientes= new HashMap<>();
+   private  Map<Integer, Paciente> mapaPacientes= new HashMap<>();
     
     @Override
-    public Map<String, Paciente> getPacientes() {
+    public Map<Integer, Paciente> getPacientes() {
         return mapaPacientes;
     }
 
     @Override
-    public Paciente getPaciente(String identificacion) {
+    public Paciente getPaciente(Integer identificacion) {
         return mapaPacientes.get(identificacion);
     }
 
@@ -32,13 +32,13 @@ public class PacienteDAO implements PacienteDAOInterface{
     }
 
     @Override
-    public boolean updatePaciente(String identificacion, Paciente paciente) {
+    public boolean updatePaciente(Integer identificacion, Paciente paciente) {
         mapaPacientes.put(identificacion, paciente);
         return true;
     }
 
     @Override
-    public boolean deletePaciente(String identificacion) {
+    public boolean deletePaciente(Integer identificacion) {
         mapaPacientes.remove(identificacion);
         return true;
     }
