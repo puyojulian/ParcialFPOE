@@ -28,17 +28,7 @@ public class Paciente implements Serializable{
         this.telefono = telefono;
         this.direccion = direccion;
         this.alergias = new ArrayList();
-        System.out.println("Paciente Instanciado");
     }
-
-//    public Paciente(Integer identificacion) {
-//        this.identificacion = identificacion;
-//        this.nombres = "";
-//        this.apellidos = "";
-//        this.telefono = "";
-//        this.direccion = "";
-//        this.alergias = new ArrayList();
-//    }
     
     public void addAlergia(Alergia alergia) {
         alergias.add(alergia);

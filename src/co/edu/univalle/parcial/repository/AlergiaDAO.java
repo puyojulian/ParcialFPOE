@@ -47,5 +47,4 @@ public class AlergiaDAO implements AlergiaDAOInterface {
     public void setAlergias(Map<Integer, Alergia> mapaAlergias) {
         this.mapaAlergias = mapaAlergias;
     }
-    
 }

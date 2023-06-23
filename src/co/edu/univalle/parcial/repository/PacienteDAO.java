@@ -48,5 +48,4 @@ public class PacienteDAO implements PacienteDAOInterface{
     public void setPacientes(Map<String, Paciente> mapaPacientes) {
         this.mapaPacientes = mapaPacientes;
     }
-    
 }
