@@ -5,6 +5,7 @@
 package co.edu.univalle.parcial.repository;
 
 import co.edu.univalle.parcial.models.Paciente;
+import java.math.BigInteger;
 import java.util.Map;
 
 /**
@@ -12,13 +13,13 @@ import java.util.Map;
  * @author Julian Puyo
  */
 public interface PacienteDAOInterface {
-    public Map<Integer, Paciente> getPacientes();
+    public Map<String, Paciente> getPacientes();
     
-    public Paciente getPaciente(Integer identificacion);
+    public Paciente getPaciente(String identificacion);
     
     public boolean addPaciente(Paciente paciente);
     
-    public boolean updatePaciente(Integer identificacion, Paciente paciente);
+    public boolean updatePaciente(String identificacion, Paciente paciente);
     
-    public boolean deletePaciente(Integer identificacion);
+    public boolean deletePaciente(String identificacion);
 }

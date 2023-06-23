@@ -5,6 +5,7 @@
 package co.edu.univalle.parcial.repository;
 
 import co.edu.univalle.parcial.models.Paciente;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,15 +14,15 @@ import java.util.Map;
  * @author Julian Puyo
  */
 public class PacienteDAO implements PacienteDAOInterface{
-   private  Map<Integer, Paciente> mapaPacientes= new HashMap<>();
+   private  Map<String, Paciente> mapaPacientes= new HashMap<>();
     
     @Override
-    public Map<Integer, Paciente> getPacientes() {
+    public Map<String, Paciente> getPacientes() {
         return mapaPacientes;
     }
 
     @Override
-    public Paciente getPaciente(Integer identificacion) {
+    public Paciente getPaciente(String identificacion) {
         return mapaPacientes.get(identificacion);
     }
 
@@ -32,13 +33,13 @@ public class PacienteDAO implements PacienteDAOInterface{
     }
 
     @Override
-    public boolean updatePaciente(Integer identificacion, Paciente paciente) {
+    public boolean updatePaciente(String identificacion, Paciente paciente) {
         mapaPacientes.put(identificacion, paciente);
         return true;
     }
 
     @Override
-    public boolean deletePaciente(Integer identificacion) {
+    public boolean deletePaciente(String identificacion) {
         mapaPacientes.remove(identificacion);
         return true;
     }

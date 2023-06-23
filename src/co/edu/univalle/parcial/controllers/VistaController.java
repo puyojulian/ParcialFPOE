@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 
 /**
@@ -81,7 +83,7 @@ public class VistaController {
         }        
     }
     
-    private void popularJList(Integer identificacion) {
+    private void popularJList(String identificacion) {
         List listaAlergias = daoPaciente.getPaciente(identificacion).getAlergias();
         listModel.removeAllElements();
         
@@ -94,19 +96,19 @@ public class VistaController {
         vista.getjList1().setModel(listModel);
     }
     
-    private Integer verificarIndentificacion(Integer identificacion) {
+    private String verificarIndentificacion(String identificacion) {
         mapaPacientes = daoPaciente.getPacientes();
-        Set<Map.Entry<Integer, Paciente>> entrySetMapa = mapaPacientes.entrySet();
+        Set<Map.Entry<String, Paciente>> entrySetMapa = mapaPacientes.entrySet();
         
-        for (Map.Entry<Integer, Paciente> entry : entrySetMapa){
-            if(entry.getKey() == identificacion) {
+        for (Map.Entry<String, Paciente> entry : entrySetMapa){
+            if(entry.getKey().equals(identificacion)) {
                 System.out.println("Paciente encontrado");
                 System.out.println(identificacion);
                 return identificacion;
             }
         }
         System.out.println("Paciente no encontrado");
-        return 0;
+        return "";
     }
     
     private void estadoInicialTxt() {
@@ -120,9 +122,9 @@ public class VistaController {
         deshabilitarCampos();
     }
     
-    private void guardarAlergias(Integer identificacion) {
+    private void guardarAlergias(String identificacion) {
         ListModel<String> listModel = vista.getjList1().getModel();
-
+        
         List<String> lista = new ArrayList<>();
         for (int i = 0; i < listModel.getSize(); i++) {
             String element = listModel.getElementAt(i);
@@ -132,6 +134,22 @@ public class VistaController {
         
         daoPaciente.getPaciente(identificacion).setAlergias(lista);
     }
+    
+    private boolean alergiaYaAgregada() {
+        if(!listModel.isEmpty()) {
+            for (int i = 0; i < listModel.getSize(); i++) {
+                if(listModel.getElementAt(i).equals(vista.getjComboBox1().getSelectedItem())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    private boolean esNumerico(String cadena) {
+        return cadena.matches("\\d+");
+    }
+    
     
     private void habilitarCampos() {
         vista.getTxtApellidos().setEnabled(true);
@@ -155,33 +173,66 @@ public class VistaController {
         vista.getBtnGuardar().setEnabled(false);
     }
     
+    public void mensajeTemporal(String mensaje, String titulo, int milisegundos) {
+        JOptionPane msg = new JOptionPane(mensaje, JOptionPane.INFORMATION_MESSAGE);
+        final JDialog dlg = msg.createDialog(titulo);
+        dlg.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        new Thread(new Runnable() {
+          @Override
+          public void run() {
+            try {
+              Thread.sleep(milisegundos);
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
+            dlg.setVisible(false);
+          }
+        }).start();
+        dlg.setVisible(true);
+    }
+    
     class ActionsHandler implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == vista.getBtnAgregar()) {
-                listModel.addElement(vista.getjComboBox1().getSelectedItem());
-                vista.getjList1().setModel(listModel);
+                if(!alergiaYaAgregada()) {
+                    listModel.addElement(vista.getjComboBox1().getSelectedItem());
+                    vista.getjList1().setModel(listModel);
+                }
+                else {
+                    mensajeTemporal("Esa alergia ya ha sido registrada.", "Error", 1100);
+                }
             }
             else if(e.getSource() == vista.getBtnGuardar()) {
-                if(!vista.getTxtIdentificacion().getText().isEmpty()) {
-                    Integer busquedaID = verificarIndentificacion(Integer.valueOf(vista.getTxtIdentificacion().getText()));
-                    if(busquedaID !=0) {
-                        daoPaciente.getPaciente(busquedaID).setApellidos(vista.getTxtApellidos().getText());
-                        daoPaciente.getPaciente(busquedaID).setNombres(vista.getTxtNombres().getText());
-                        daoPaciente.getPaciente(busquedaID).setTelefono(vista.getTxtTelefono().getText());
-                        daoPaciente.getPaciente(busquedaID).setDireccion(vista.getTxtDireccion().getText());
-                        guardarAlergias(Integer.valueOf(vista.getTxtIdentificacion().getText()));
-                        estadoInicialTxt();
+                if(!vista.getTxtIdentificacion().getText().isEmpty() && esNumerico(vista.getTxtIdentificacion().getText())) {
+                    String busquedaID = verificarIndentificacion(String.valueOf(vista.getTxtIdentificacion().getText()));
+                    if(!busquedaID.isEmpty()) {  
+                        if(esNumerico(vista.getTxtTelefono().getText())) {
+                            daoPaciente.getPaciente(busquedaID).setApellidos(vista.getTxtApellidos().getText());
+                            daoPaciente.getPaciente(busquedaID).setNombres(vista.getTxtNombres().getText());
+                            daoPaciente.getPaciente(busquedaID).setTelefono(vista.getTxtTelefono().getText());
+                            daoPaciente.getPaciente(busquedaID).setDireccion(vista.getTxtDireccion().getText());
+                            guardarAlergias(String.valueOf(vista.getTxtIdentificacion().getText()));
+                            estadoInicialTxt();
+                        }
+                        else {
+                            mensajeTemporal("El número de teléfono debe ser numérico.", "Error", 1100);
+                        }
                     }
                     else {
-                        daoPaciente.addPaciente(new Paciente(Integer.valueOf(vista.getTxtIdentificacion().getText()), 
+                        if(esNumerico(vista.getTxtTelefono().getText())) {
+                            daoPaciente.addPaciente(new Paciente(String.valueOf(vista.getTxtIdentificacion().getText()), 
                                 vista.getTxtNombres().getText(), 
                                 vista.getTxtApellidos().getText(),
                                 vista.getTxtTelefono().getText(),
                                 vista.getTxtDireccion().getText()));
-                        guardarAlergias(Integer.valueOf(vista.getTxtIdentificacion().getText()));
-                        estadoInicialTxt();
+                            guardarAlergias(String.valueOf(vista.getTxtIdentificacion().getText()));
+                            estadoInicialTxt();
+                        }
+                        else {
+                            mensajeTemporal("El número de teléfono debe ser numérico.", "Error", 1100);
+                        }
                     }
                 }
             }
@@ -203,23 +254,30 @@ public class VistaController {
         @Override
         public void focusLost(FocusEvent e) {
             if(e.getSource() == vista.getTxtIdentificacion()) {
-                if(!vista.getTxtIdentificacion().getText().isEmpty()) {
-                    habilitarCampos();
-                    Integer busquedaID = verificarIndentificacion(Integer.valueOf(vista.getTxtIdentificacion().getText()));
-                    if(busquedaID != 0) {
-                        vista.getBtnGuardar().setText("Actualizar");
-                        vista.getTxtApellidos().setText(daoPaciente.getPaciente(busquedaID).getApellidos());
-                        vista.getTxtNombres().setText(daoPaciente.getPaciente(busquedaID).getNombres());
-                        vista.getTxtTelefono().setText(daoPaciente.getPaciente(busquedaID).getTelefono());
-                        vista.getTxtDireccion().setText(daoPaciente.getPaciente(busquedaID).getDireccion());
-                        popularJList(busquedaID);
+                if(esNumerico(vista.getTxtIdentificacion().getText())) {
+                    if(!vista.getTxtIdentificacion().getText().isEmpty()) {
+                        habilitarCampos();
+                        String busquedaID = verificarIndentificacion(String.valueOf(vista.getTxtIdentificacion().getText()));
+                        if(!busquedaID.isEmpty()) {
+                            vista.getBtnGuardar().setText("Actualizar");
+                            vista.getTxtApellidos().setText(daoPaciente.getPaciente(busquedaID).getApellidos());
+                            vista.getTxtNombres().setText(daoPaciente.getPaciente(busquedaID).getNombres());
+                            vista.getTxtTelefono().setText(daoPaciente.getPaciente(busquedaID).getTelefono());
+                            vista.getTxtDireccion().setText(daoPaciente.getPaciente(busquedaID).getDireccion());
+                            popularJList(busquedaID);
+                        }
+                        else {
+                            vista.getBtnGuardar().setText("Guardar");
+                        }
                     }
                     else {
-                        vista.getBtnGuardar().setText("Guardar");
+                        deshabilitarCampos();
                     }
                 }
                 else {
-                    deshabilitarCampos();
+                    mensajeTemporal("El número de identificación debe ser numérico.", "Error", 1100);
+                    vista.getTxtIdentificacion().setText("");
+                    estadoInicialTxt();
                 }
             }
         }
@@ -236,18 +294,18 @@ public class VistaController {
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 vista.getJpDatosPersonales().requestFocus();
-                if(!vista.getTxtIdentificacion().getText().isEmpty()) {
-                    Integer busquedaID = verificarIndentificacion(Integer.valueOf(vista.getTxtIdentificacion().getText()));
-                    if(busquedaID != 0) {
+                if(!vista.getTxtIdentificacion().getText().isEmpty() && esNumerico(vista.getTxtIdentificacion().getText())) {
+                    String busquedaID = verificarIndentificacion(String.valueOf(vista.getTxtIdentificacion().getText()));
+                    if(!busquedaID.isEmpty()) {
                         vista.getTxtApellidos().requestFocus();
                     }
                 }    
             }
             else if(e.getKeyCode() == KeyEvent.VK_TAB) {
                 vista.getJpDatosPersonales().requestFocus();
-                if(!vista.getTxtIdentificacion().getText().isEmpty()) {
-                    Integer busquedaID = verificarIndentificacion(Integer.valueOf(vista.getTxtIdentificacion().getText()));
-                    if(busquedaID != 0) {
+                if(!vista.getTxtIdentificacion().getText().isEmpty() && esNumerico(vista.getTxtIdentificacion().getText())) {
+                    String busquedaID = verificarIndentificacion(String.valueOf(vista.getTxtIdentificacion().getText()));
+                    if(!busquedaID.isEmpty()) {
                         vista.getTxtApellidos().requestFocus();
                     }
                 }

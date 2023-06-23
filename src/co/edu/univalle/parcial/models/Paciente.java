@@ -4,6 +4,7 @@
  */
 package co.edu.univalle.parcial.models;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -12,14 +13,14 @@ import java.util.ArrayList;
  * @author Julian Puyo
  */
 public class Paciente {
-    private Integer identificacion;
+    private String identificacion;
     private String nombres;
     private String apellidos;
     private String telefono;
     private String direccion;
     private List<Alergia> alergias;
 
-    public Paciente(Integer identificacion, String nombres, String apellidos, String telefono, String direccion) {
+    public Paciente(String identificacion, String nombres, String apellidos, String telefono, String direccion) {
         this.identificacion = identificacion;
         this.nombres = nombres;
         this.apellidos = apellidos;
@@ -50,11 +51,11 @@ public class Paciente {
         this.alergias = alergias;
     }
     
-    public Integer getIdentificacion() {
+    public String getIdentificacion() {
         return identificacion;
     }
 
-    public void setIdentificacion(Integer identificacion) {
+    public void setIdentificacion(String identificacion) {
         this.identificacion = identificacion;
     }
 
